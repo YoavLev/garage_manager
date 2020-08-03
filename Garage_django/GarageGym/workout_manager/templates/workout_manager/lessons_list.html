@@ -1,0 +1,43 @@
+{% extends "workout_manager/base.html" %}
+{% block content %}
+<h1>Upcoming Lessons</h1>
+                    <button id="join_lesson" class="btn btn-outline-success mt-3" type="submit">Join Workout</button>
+                    <button id="quit_lesson" class="btn btn-outline-secondary mt-3" type="submit">Remove Yourself</button>
+    {% for lesson in lessons %}
+    <div class="container p-3 my-3 bg-dark text-white border">
+            <h2>Lesson starts at: {{ lesson.date_time }}</h2>
+            <h3>Max participants: {{ lesson.max_people }}</h3>
+            <ul class="list-group text-dark">
+                <li class="list-group-item">People signed to this workout:
+
+                    {% for person in lesson.person_set.all %}
+                    <ul>
+                        <li class="list-group-item">{{ person.first_name }} {{ person.last_name }}</li>
+                    </ul>
+                    {% endfor %}
+
+                </li>
+            </ul>
+    </div>
+    {% endfor %}
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#quit_lesson").modalForm({
+        formURL: "{% url 'quit_lesson' %}"
+    });
+
+    $("#join_lesson").modalForm({
+        formURL: "{% url 'join_lesson' %}"
+    });
+
+});
+</script>
+{% endblock content %}
